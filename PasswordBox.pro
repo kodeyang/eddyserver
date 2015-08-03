@@ -9,6 +9,7 @@ QT += core widgets gui
 CONFIG += debug
 DEFINES += WIN64 QT_DLL QT_WIDGETS_LIB
 INCLUDEPATH += ./GeneratedFiles \
+    ./Source \
     . \
     ./GeneratedFiles/Debug
 DEPENDPATH += .
@@ -17,3 +18,5 @@ OBJECTS_DIR += debug
 UI_DIR += ./GeneratedFiles
 RCC_DIR += ./GeneratedFiles
 include(PasswordBox.pri)
+
+RESOURCES += ./Resources/res.qrc

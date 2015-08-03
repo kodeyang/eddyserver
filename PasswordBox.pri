@@ -7,6 +7,39 @@
 message("You are running qmake on a generated .pro file. This may not work!")
 
 
-HEADERS += ./Classes/MainWindow.h
+HEADERS += ./Source/MainWindow.h \
+    ./Source/FolderList.h \
+    ./Source/DataSource.h \
+    ./Source/rapidjson/allocators.h \
+    ./Source/rapidjson/document.h \
+    ./Source/rapidjson/encodedstream.h \
+    ./Source/rapidjson/encodings.h \
+    ./Source/rapidjson/filereadstream.h \
+    ./Source/rapidjson/filewritestream.h \
+    ./Source/rapidjson/memorybuffer.h \
+    ./Source/rapidjson/memorystream.h \
+    ./Source/rapidjson/pointer.h \
+    ./Source/rapidjson/prettywriter.h \
+    ./Source/rapidjson/rapidjson.h \
+    ./Source/rapidjson/reader.h \
+    ./Source/rapidjson/stringbuffer.h \
+    ./Source/rapidjson/writer.h \
+    ./Source/rapidjson/error/en.h \
+    ./Source/rapidjson/error/error.h \
+    ./Source/rapidjson/internal/biginteger.h \
+    ./Source/rapidjson/internal/diyfp.h \
+    ./Source/rapidjson/internal/dtoa.h \
+    ./Source/rapidjson/internal/ieee754.h \
+    ./Source/rapidjson/internal/itoa.h \
+    ./Source/rapidjson/internal/meta.h \
+    ./Source/rapidjson/internal/pow10.h \
+    ./Source/rapidjson/internal/stack.h \
+    ./Source/rapidjson/internal/strfunc.h \
+    ./Source/rapidjson/internal/strtod.h \
+    ./Source/rapidjson/internal/swap.h \
+    ./Source/rapidjson/msinttypes/inttypes.h \
+    ./Source/rapidjson/msinttypes/stdint.h
 SOURCES += ./main.cpp \
-    ./Classes/MainWindow.cpp
+    ./Source/DataSource.cpp \
+    ./Source/FolderList.cpp \
+    ./Source/MainWindow.cpp
