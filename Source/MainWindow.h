@@ -17,6 +17,9 @@ private:
 
 	void createFileMenu();
 
+private Q_SLOTS:
+	void openFile();
+
 private:
 	QAction* new_action_;
 	QAction* open_action_;

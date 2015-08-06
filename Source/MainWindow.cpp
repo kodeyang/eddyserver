@@ -44,6 +44,7 @@ void MainWindow::createActions()
 
 	open_action_ = new QAction(QIcon(":/images/folder_open.png"), tr("&Open"), this);
 	open_action_->setShortcut(QKeySequence::Open);
+	QObject::connect(open_action_, SIGNAL(trigger), this, SLOT(openFile));
 }
 
 void MainWindow::createFileMenu()
@@ -51,4 +52,9 @@ void MainWindow::createFileMenu()
 	auto file_menu_ = menuBar()->addMenu(tr("&File"));
 	file_menu_->addAction(new_action_);
 	file_menu_->addAction(open_action_);
+}
+
+void MainWindow::openFile()
+{
+
 }
