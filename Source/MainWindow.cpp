@@ -1,8 +1,11 @@
 ﻿#include "MainWindow.h"
 
+#include <QtDebug>
+#include <QFile>
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QToolBar>
 #include <QtWidgets/QSplitter>
+#include <QtWidgets/QFileDialog>
 
 #include "DocList.h"
 #include "FolderList.h"
@@ -44,7 +47,7 @@ void MainWindow::createActions()
 
 	open_action_ = new QAction(QIcon(":/images/folder_open.png"), tr("&Open"), this);
 	open_action_->setShortcut(QKeySequence::Open);
-	QObject::connect(open_action_, SIGNAL(trigger), this, SLOT(openFile));
+	QObject::connect(open_action_, SIGNAL(triggered()), this, SLOT(openFile()));
 }
 
 void MainWindow::createFileMenu()
@@ -56,5 +59,11 @@ void MainWindow::createFileMenu()
 
 void MainWindow::openFile()
 {
-
+	QString file_name = QFileDialog::getOpenFileName(this, tr("Open"), ".", tr("Password files (*.pw)"));
+	if (!file_name.isEmpty())
+	{
+		QFile file(file_name);
+		file.open(QIODevice::OpenModeFlag::ReadOnly);
+		qDebug() << file.readAll();
+	}
 }
