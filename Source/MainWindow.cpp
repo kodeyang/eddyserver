@@ -29,8 +29,8 @@ MainWindow::MainWindow(QWidget *parent, Qt::WindowFlags flags)
 	auto doc_list = new DoccView(this);
 	splitter->addWidget(doc_list);
 
-	splitter->setStretchFactor(0, 25);
-	splitter->setStretchFactor(1, 75);
+	splitter->setStretchFactor(0, 20);
+	splitter->setStretchFactor(1, 80);
 
 	statusBar();
 	setMinimumSize(QSize(840, 460));
@@ -43,7 +43,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::createActions()
 {
-	new_action_ = new QAction(QIcon(":/images/doc_new.png"), tr("&New"), this);
+	new_action_ = new QAction(QIcon(":/images/folder_new.png"), tr("&New"), this);
 	new_action_->setShortcut(QKeySequence::New);
 
 	open_action_ = new QAction(QIcon(":/images/folder_open.png"), tr("&Open"), this);

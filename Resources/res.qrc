@@ -1,13 +1,8 @@
 <RCC>
     <qresource prefix="/images">
-        <file>db.png</file>
-        <file>delete.png</file>
-        <file>doc_minus.png</file>
-        <file>doc_new.png</file>
-        <file>doc_plus.png</file>
+        <file>doc.png</file>
         <file>folder.png</file>
-        <file>folder_delete.png</file>
+        <file>folder_new.png</file>
         <file>folder_open.png</file>
-        <file>folder_plus.png</file>
     </qresource>
 </RCC>
