@@ -7,8 +7,8 @@
 #include <QtWidgets/QSplitter>
 #include <QtWidgets/QFileDialog>
 
-#include "DocList.h"
-#include "FolderList.h"
+#include "DoccView.h"
+#include "FolderView.h"
 
 
 MainWindow::MainWindow(QWidget *parent, Qt::WindowFlags flags)
@@ -23,14 +23,14 @@ MainWindow::MainWindow(QWidget *parent, Qt::WindowFlags flags)
 	auto splitter = new QSplitter(this);
 	setCentralWidget(splitter);
 
-	auto folder_list = new FolderList(this);
+	auto folder_list = new FolderView(this);
 	splitter->addWidget(folder_list);
 
-	auto doc_list = new DocList(this);
+	auto doc_list = new DoccView(this);
 	splitter->addWidget(doc_list);
 
-	splitter->setStretchFactor(0, 2);
-	splitter->setStretchFactor(1, 8);
+	splitter->setStretchFactor(0, 3);
+	splitter->setStretchFactor(1, 7);
 
 	statusBar();
 }
