@@ -8,7 +8,6 @@ DoccView::DoccView(QWidget *parent)
 	QStringList header;
 	header << tr("Title") << tr("User Name") << tr("Password") << tr("URL") << tr("Notes");
 	setHorizontalHeaderLabels(header);
-	this->resizeColumnToContents(0);
 }
 
 DoccView::~DoccView()

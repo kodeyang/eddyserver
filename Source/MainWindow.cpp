@@ -29,10 +29,11 @@ MainWindow::MainWindow(QWidget *parent, Qt::WindowFlags flags)
 	auto doc_list = new DoccView(this);
 	splitter->addWidget(doc_list);
 
-	splitter->setStretchFactor(0, 3);
-	splitter->setStretchFactor(1, 7);
+	splitter->setStretchFactor(0, 25);
+	splitter->setStretchFactor(1, 75);
 
 	statusBar();
+	setMinimumSize(QSize(840, 460));
 }
 
 MainWindow::~MainWindow()
