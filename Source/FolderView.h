@@ -12,6 +12,6 @@ public:
 	explicit FolderView(QWidget *parent = 0);
 	~FolderView();
 
-public:
+public Q_SLOTS:
 	void refreshFolders(DataSource *data_source);
 };

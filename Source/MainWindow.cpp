@@ -26,6 +26,7 @@ MainWindow::MainWindow(QWidget *parent, Qt::WindowFlags flags)
 
 	auto folder_list = new FolderView(this);
 	splitter->addWidget(folder_list);
+	QObject::connect(data_source_.data(), &DataSource::refresh, folder_list, &FolderView::refreshFolders);
 
 	auto doc_list = new DoccView(this);
 	splitter->addWidget(doc_list);

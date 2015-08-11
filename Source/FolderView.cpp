@@ -18,7 +18,10 @@ FolderView::~FolderView()
 
 void FolderView::refreshFolders(DataSource *data_source)
 {
-	QListWidgetItem *item = new QListWidgetItem(QIcon(":/images/folder.png"), "dadasda", this);
-	item->setFlags(Qt::ItemIsEnabled | Qt::ItemIsEditable);
-	addItem(item);
+	for (auto &item_name : data_source->takeCategorys())
+	{
+		QListWidgetItem *item = new QListWidgetItem(QIcon(":/images/folder.png"), item_name, this);
+		item->setFlags(Qt::ItemIsEnabled | Qt::ItemIsEditable);
+		addItem(item);
+	}
 }
