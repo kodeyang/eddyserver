@@ -35,10 +35,9 @@ public:
 	QVector<QString> getCategorys() const;
 
 public Q_SLOTS:
+	void deleteCategory(size_t index);
 	void addCategory(const QString &name);
-	void deleteCategory(const QString &name);
-	void renameCategory(int index, const QString &new_name);
-	void renameCategory(const QString &name, const QString &new_name);
+	void renameCategory(size_t index, const QString &new_name);
 
 Q_SIGNALS:
 	void refresh(DataSource *data_source);

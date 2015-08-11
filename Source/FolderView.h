@@ -16,5 +16,5 @@ public Q_SLOTS:
 	void refreshFolders(DataSource *data_source);
 
 Q_SIGNALS:
-	void renameFolder(const QString &name, const QString &new_name);
+	void renameFolder(size_t index, const QString &new_name);
 };

@@ -92,53 +92,46 @@ void DataSource::addCategory(const QString &name)
 	}
 }
 
-void DataSource::deleteCategory(const QString &name)
-{
-	auto itr = all_records_.find(name);
-	if (itr != all_records_.end())
-	{
-		
-		all_records_.erase(itr);
-		emit refresh(this);
-	}
-	else
-	{
-		auto result = qFind(category_order_.begin(), category_order_.end(), name);
-		Q_ASSERT(result != category_order_.end());
-		category_order_.erase(result);
-
-		emit refresh(this);
-		emit message(CATEGORY_NOT_EXISTS, tr("category does not exist failed to delete the category"));
-	}
-}
-
-void DataSource::renameCategory(int index, const QString &new_name)
+void DataSource::deleteCategory(size_t index)
 {
 	if (index < category_order_.size())
 	{
+		QString &category_name = category_order_[index];
+		auto category_itr = all_records_.find(category_name);
+		Q_ASSERT(category_itr != all_records_.end());
 
+		all_records_.erase(category_itr);
+
+		auto order_itr = qFind(category_order_.begin(), category_order_.end(), category_name);
+		Q_ASSERT(order_itr != category_order_.end());
+		category_order_.erase(order_itr);
+
+		emit refresh(this);
 	}
 	else
 	{
 		emit refresh(this);
-		emit message(CATEGORY_NOT_EXISTS, tr("category does not exist, rename category failed"));
+		emit message(CATEGORY_NOT_EXISTS, tr("category does not exist failed to delete category"));
 	}
 }
 
-void DataSource::renameCategory(const QString &name, const QString &new_name)
+void DataSource::renameCategory(size_t index, const QString &new_name)
 {
-	auto itr = all_records_.find(name);
-	if (itr != all_records_.end())
+	if (index < category_order_.size())
 	{
+		QString &category_name = category_order_[index];
+		auto category_itr = all_records_.find(category_name);
+		Q_ASSERT(category_itr != all_records_.end());
+
 		if (all_records_.find(new_name) == all_records_.end())
 		{
-			QVector<PWData> records(std::move(*itr));
-			all_records_.erase(itr);
+			QVector<PWData> records(std::move(*category_itr));
+			all_records_.erase(category_itr);
 			all_records_.insert(new_name, std::move(records));
 
-			auto result = qFind(category_order_.begin(), category_order_.end(), name);
-			Q_ASSERT(result != category_order_.end());
-			*result = new_name;
+			auto order_itr = qFind(category_order_.begin(), category_order_.end(), category_name);
+			Q_ASSERT(order_itr != category_order_.end());
+			*order_itr = new_name;
 
 			emit refresh(this);
 		}
