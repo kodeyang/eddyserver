@@ -3,6 +3,8 @@
 #include <QtGlobal>
 #include <QtAlgorithms>
 
+#include "rapidjson/document.h"
+
 
 DataSource::DataSource()
 {
@@ -23,6 +25,55 @@ void DataSource::importData(const QByteArray &bytes)
 {
 	all_records_.clear();
 	category_order_.clear();
+
+	rapidjson::Document doc;
+	doc.Parse<0>(bytes.data());
+
+	if (!doc.HasParseError())
+	{
+		for (auto itr = doc.MemberBegin(); itr != doc.MemberEnd(); ++itr)
+		{
+			if (itr->name.IsString() && itr->value.IsArray())
+			{
+				const rapidjson::Value &json_array = itr->value;
+				for (size_t idx = 0; idx < json_array.Size(); ++idx)
+				{
+					if (json_array[idx].IsObject())
+					{
+						const rapidjson::Value &json_object = json_array[idx];
+						if (json_object.HasMember("title")
+							&& json_object.HasMember("user_name")
+							&& json_object.HasMember("pass_word")
+							&& json_object.HasMember("url")
+							&& json_object.HasMember("notes")
+							&& json_object["title"].IsString()
+							&& json_object["user_name"].IsString()
+							&& json_object["pass_word"].IsString()
+							&& json_object["url"].IsString()
+							&& json_object["notes"].IsString()
+							)
+						{
+							PWData data;
+							data.title = json_object["title"].GetString();
+							data.user_name = json_object["user_name"].GetString();
+							data.pass_word = json_object["pass_word"].GetString();
+							data.url = json_object["url"].GetString();
+							data.notes = json_object["notes"].GetString();
+							all_records_[itr->name.GetString()].push_back(std::move(data));
+						}
+					}
+				}
+				category_order_.push_back(itr->name.GetString());
+			}
+		}
+	}
+
+	emit refresh(this);
+}
+
+QVector<QString> DataSource::takeCategorys() const
+{
+	return category_order_;
 }
 
 void DataSource::addCategory(const QString &name)

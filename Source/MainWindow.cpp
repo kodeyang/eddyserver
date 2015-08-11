@@ -8,12 +8,14 @@
 
 #include "DoccView.h"
 #include "FolderView.h"
+#include "DataSource.h"
 
 
 MainWindow::MainWindow(QWidget *parent, Qt::WindowFlags flags)
 	: QMainWindow(parent, flags)
 	, new_action_(nullptr)
 	, open_action_(nullptr)
+	, data_source_(new DataSource())
 {
 	createActions();
 
@@ -64,5 +66,6 @@ void MainWindow::openFile()
 	{
 		QFile file(file_name);
 		file.open(QIODevice::OpenModeFlag::ReadOnly);
+		data_source_->importData(file.readAll());
 	}
 }

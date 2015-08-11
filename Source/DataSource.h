@@ -32,6 +32,8 @@ public:
 	QByteArray exportData() const;
 	void importData(const QByteArray &bytes);
 
+	QVector<QString> takeCategorys() const;
+
 public Q_SLOTS:
 	void addCategory(const QString &name);
 	void deleteCategory(const QString &name);

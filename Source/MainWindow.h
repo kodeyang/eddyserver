@@ -2,6 +2,7 @@
 
 #include <QtWidgets/QMainWindow>
 
+class DataSource;
 
 class MainWindow final : public QMainWindow
 {
@@ -23,4 +24,5 @@ private Q_SLOTS:
 private:
 	QAction* new_action_;
 	QAction* open_action_;
+	QScopedPointer<DataSource> data_source_;
 };
