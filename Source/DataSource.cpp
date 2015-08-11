@@ -71,7 +71,7 @@ void DataSource::importData(const QByteArray &bytes)
 	emit refresh(this);
 }
 
-QVector<QString> DataSource::takeCategorys() const
+QVector<QString> DataSource::getCategorys() const
 {
 	return category_order_;
 }

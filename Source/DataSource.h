@@ -32,7 +32,7 @@ public:
 	QByteArray exportData() const;
 	void importData(const QByteArray &bytes);
 
-	QVector<QString> takeCategorys() const;
+	QVector<QString> getCategorys() const;
 
 public Q_SLOTS:
 	void addCategory(const QString &name);
