@@ -120,6 +120,9 @@ void DataSource::renameCategory(size_t index, const QString &new_name)
 	if (index < category_order_.size())
 	{
 		QString &category_name = category_order_[index];
+
+		if (category_name == new_name) return;
+
 		auto category_itr = all_records_.find(category_name);
 		Q_ASSERT(category_itr != all_records_.end());
 

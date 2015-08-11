@@ -5,10 +5,10 @@
 #include <QtWidgets/QToolBar>
 #include <QtWidgets/QSplitter>
 #include <QtWidgets/QFileDialog>
+#include <QtWidgets/QMessageBox>
 
 #include "DoccView.h"
 #include "FolderView.h"
-#include "DataSource.h"
 
 
 MainWindow::MainWindow(QWidget *parent, Qt::WindowFlags flags)
@@ -36,6 +36,7 @@ MainWindow::MainWindow(QWidget *parent, Qt::WindowFlags flags)
 	statusBar();
 	setMinimumSize(QSize(840, 460));
 
+	QObject::connect(data_source_.data(), &DataSource::message, this, &MainWindow::popupMessage);
 	QObject::connect(data_source_.data(), &DataSource::refresh, folder_list, &FolderView::refreshFolders);
 	QObject::connect(folder_list, &FolderView::renameFolder, data_source_.data(), &DataSource::renameCategory);
 }
@@ -71,4 +72,13 @@ void MainWindow::openFile()
 		file.open(QIODevice::OpenModeFlag::ReadOnly);
 		data_source_->importData(file.readAll());
 	}
+}
+
+void MainWindow::popupMessage(DataSource::MessageCode code, const QString &details)
+{
+	QMessageBox message_box(this);
+	message_box.setWindowTitle(tr("Tips"));
+	message_box.addButton(tr("OK"), QMessageBox::ActionRole);
+	message_box.setText(details);
+	message_box.exec();
 }

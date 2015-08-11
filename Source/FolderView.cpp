@@ -9,6 +9,11 @@ FolderView::FolderView(QWidget *parent)
 	: QListWidget(parent)
 {
 	addScrollBarWidget(new QScrollBar(), Qt::AlignRight);
+
+	QObject::connect(this, &QListWidget::itemChanged, this, [=](QListWidgetItem *item)
+	{
+		emit renameFolder(row(item), item->text());
+	});
 }
 
 FolderView::~FolderView()
@@ -26,9 +31,8 @@ void FolderView::refreshFolders(DataSource *data_source)
 	{
 		if (idx < count())
 		{
-			QListWidgetItem *item = takeItem(idx);
-			item->setText(categorys[idx]);
-			addItem(item);
+			QListWidgetItem *itemx = item(idx);
+			itemx->setText(categorys[idx]);
 		}
 		else
 		{

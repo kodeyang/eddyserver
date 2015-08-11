@@ -1,8 +1,7 @@
 ﻿#pragma once
 
 #include <QtWidgets/QMainWindow>
-
-class DataSource;
+#include "DataSource.h"
 
 class MainWindow final : public QMainWindow
 {
@@ -20,6 +19,7 @@ private:
 
 private Q_SLOTS:
 	void openFile();
+	void popupMessage(DataSource::MessageCode code, const QString &details);
 
 private:
 	QAction* new_action_;
