@@ -15,6 +15,7 @@ MainWindow::MainWindow(QWidget *parent, Qt::WindowFlags flags)
 	: QMainWindow(parent, flags)
 	, new_action_(nullptr)
 	, open_action_(nullptr)
+	, save_action_(nullptr)
 	, data_source_(new DataSource())
 {
 	createActions();
@@ -54,6 +55,10 @@ void MainWindow::createActions()
 	open_action_ = new QAction(QIcon(":/images/folder_open.png"), tr("&Open"), this);
 	open_action_->setShortcut(QKeySequence::Open);
 	QObject::connect(open_action_, SIGNAL(triggered()), this, SLOT(openFile()));
+
+	save_action_ = new QAction(QIcon(":/images/folder_open.png"), tr("&Save"), this);
+	save_action_->setShortcut(QKeySequence::Save);
+	QObject::connect(save_action_, SIGNAL(triggered()), this, SLOT(saveFile()));
 }
 
 void MainWindow::createFileMenu()
@@ -61,16 +66,27 @@ void MainWindow::createFileMenu()
 	auto file_menu_ = menuBar()->addMenu(tr("&File"));
 	file_menu_->addAction(new_action_);
 	file_menu_->addAction(open_action_);
+	file_menu_->addAction(save_action_);
 }
 
 void MainWindow::openFile()
 {
-	QString file_name = QFileDialog::getOpenFileName(this, tr("Open"), ".", tr("Password files (*.pw)"));
-	if (!file_name.isEmpty())
+	current_file_ = QFileDialog::getOpenFileName(this, tr("Open"), ".", tr("Password files (*.pw)"));
+	if (!current_file_.isEmpty())
 	{
-		QFile file(file_name);
+		QFile file(current_file_);
 		file.open(QIODevice::OpenModeFlag::ReadOnly);
 		data_source_->importData(file.readAll());
+	}
+}
+
+void MainWindow::saveFile()
+{
+	if (!current_file_.isEmpty())
+	{
+		QFile file(current_file_);
+		file.open(QIODevice::OpenModeFlag::WriteOnly);
+		file.write(data_source_->exportData());
 	}
 }
 

@@ -3,8 +3,20 @@
 #include <QtGlobal>
 #include <QtAlgorithms>
 
+#include "rapidjson/writer.h" 
 #include "rapidjson/document.h"
+#include "rapidjson/stringbuffer.h" 
 
+#include <QDebug>
+
+
+rapidjson::Value QStringToJString(const QString &text)
+{
+	rapidjson::Value json_string;
+	std::string str = text.toLocal8Bit();
+	json_string.SetString(str.data(), str.size());
+	return json_string;
+}
 
 DataSource::DataSource()
 {
@@ -18,7 +30,38 @@ DataSource::~DataSource()
 
 QByteArray DataSource::exportData() const
 {
-	return QByteArray();
+	rapidjson::Document doc;
+	doc.SetObject();
+
+	for (auto &category_name : category_order_)
+	{
+		auto category_itr = all_records_.find(category_name);
+		Q_ASSERT(category_itr != all_records_.end());
+
+		rapidjson::Value json_array;
+		json_array.SetArray();
+		for (auto &pw_data : *category_itr)
+		{
+			rapidjson::Value json_object;
+			json_object.SetObject();
+
+			json_object.AddMember("title", QStringToJString(pw_data.title), doc.GetAllocator());
+			json_object.AddMember("user_name", QStringToJString(pw_data.user_name), doc.GetAllocator());
+			json_object.AddMember("pass_word", QStringToJString(pw_data.pass_word), doc.GetAllocator());
+			json_object.AddMember("url", QStringToJString(pw_data.url), doc.GetAllocator());
+			json_object.AddMember("notes", QStringToJString(pw_data.notes), doc.GetAllocator());
+
+			json_array.PushBack(json_object, doc.GetAllocator());
+		}
+
+		doc.AddMember(QStringToJString(category_name), json_array, doc.GetAllocator());
+	}
+
+	rapidjson::StringBuffer buffer;
+	rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
+	doc.Accept(writer);
+
+	return QByteArray(buffer.GetString(), buffer.GetSize());
 }
 
 void DataSource::importData(const QByteArray &bytes)
