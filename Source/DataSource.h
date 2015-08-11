@@ -37,7 +37,8 @@ public:
 public Q_SLOTS:
 	void addCategory(const QString &name);
 	void deleteCategory(const QString &name);
-	void changeCategoryName(const QString &name, const QString &new_name);
+	void renameCategory(int index, const QString &new_name);
+	void renameCategory(const QString &name, const QString &new_name);
 
 Q_SIGNALS:
 	void refresh(DataSource *data_source);

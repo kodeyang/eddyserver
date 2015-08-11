@@ -112,7 +112,20 @@ void DataSource::deleteCategory(const QString &name)
 	}
 }
 
-void DataSource::changeCategoryName(const QString &name, const QString &new_name)
+void DataSource::renameCategory(int index, const QString &new_name)
+{
+	if (index < category_order_.size())
+	{
+
+	}
+	else
+	{
+		emit refresh(this);
+		emit message(CATEGORY_NOT_EXISTS, tr("category does not exist, rename category failed"));
+	}
+}
+
+void DataSource::renameCategory(const QString &name, const QString &new_name)
 {
 	auto itr = all_records_.find(name);
 	if (itr != all_records_.end())

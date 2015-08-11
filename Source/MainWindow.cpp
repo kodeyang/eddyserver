@@ -26,7 +26,6 @@ MainWindow::MainWindow(QWidget *parent, Qt::WindowFlags flags)
 
 	auto folder_list = new FolderView(this);
 	splitter->addWidget(folder_list);
-	QObject::connect(data_source_.data(), &DataSource::refresh, folder_list, &FolderView::refreshFolders);
 
 	auto doc_list = new DoccView(this);
 	splitter->addWidget(doc_list);
@@ -36,6 +35,9 @@ MainWindow::MainWindow(QWidget *parent, Qt::WindowFlags flags)
 
 	statusBar();
 	setMinimumSize(QSize(840, 460));
+
+	QObject::connect(data_source_.data(), &DataSource::refresh, folder_list, &FolderView::refreshFolders);
+	QObject::connect(folder_list, &FolderView::renameFolder, data_source_.data(), &DataSource::renameCategory);
 }
 
 MainWindow::~MainWindow()
