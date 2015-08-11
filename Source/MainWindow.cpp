@@ -1,6 +1,5 @@
 ﻿#include "MainWindow.h"
 
-#include <QtDebug>
 #include <QFile>
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QToolBar>
@@ -65,6 +64,5 @@ void MainWindow::openFile()
 	{
 		QFile file(file_name);
 		file.open(QIODevice::OpenModeFlag::ReadOnly);
-		qDebug() << file.readAll();
 	}
 }

@@ -14,6 +14,17 @@ DataSource::~DataSource()
 
 }
 
+QByteArray DataSource::exportData() const
+{
+	return QByteArray();
+}
+
+void DataSource::importData(const QByteArray &bytes)
+{
+	all_records_.clear();
+	category_order_.clear();
+}
+
 void DataSource::addCategory(const QString &name)
 {
 	auto itr = all_records_.find(name);
