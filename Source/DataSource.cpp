@@ -7,14 +7,11 @@
 #include "rapidjson/document.h"
 #include "rapidjson/stringbuffer.h" 
 
-#include <QDebug>
 
-
-rapidjson::Value QStringToJString(const QString &text)
+rapidjson::Value ToJsonString(const QString &text, rapidjson::Document::AllocatorType &allocator)
 {
 	rapidjson::Value json_string;
-	std::string str = text.toLocal8Bit();
-	json_string.SetString(str.data(), str.size());
+	json_string.SetString(text.toStdString().c_str(), allocator);
 	return json_string;
 }
 
@@ -31,6 +28,7 @@ DataSource::~DataSource()
 QByteArray DataSource::exportData() const
 {
 	rapidjson::Document doc;
+	rapidjson::Document::AllocatorType &allocator = doc.GetAllocator();
 	doc.SetObject();
 
 	for (auto &category_name : category_order_)
@@ -45,16 +43,16 @@ QByteArray DataSource::exportData() const
 			rapidjson::Value json_object;
 			json_object.SetObject();
 
-			json_object.AddMember("title", QStringToJString(pw_data.title), doc.GetAllocator());
-			json_object.AddMember("user_name", QStringToJString(pw_data.user_name), doc.GetAllocator());
-			json_object.AddMember("pass_word", QStringToJString(pw_data.pass_word), doc.GetAllocator());
-			json_object.AddMember("url", QStringToJString(pw_data.url), doc.GetAllocator());
-			json_object.AddMember("notes", QStringToJString(pw_data.notes), doc.GetAllocator());
+			json_object.AddMember("title", ToJsonString(pw_data.title, allocator), allocator);
+			json_object.AddMember("user_name", ToJsonString(pw_data.user_name, allocator), allocator);
+			json_object.AddMember("pass_word", ToJsonString(pw_data.pass_word, allocator), allocator);
+			json_object.AddMember("url", ToJsonString(pw_data.url, allocator), allocator);
+			json_object.AddMember("notes", ToJsonString(pw_data.notes, allocator), allocator);
 
-			json_array.PushBack(json_object, doc.GetAllocator());
+			json_array.PushBack(json_object, allocator);
 		}
 
-		doc.AddMember(QStringToJString(category_name), json_array, doc.GetAllocator());
+		doc.AddMember(ToJsonString(category_name, allocator), json_array, allocator);
 	}
 
 	rapidjson::StringBuffer buffer;
