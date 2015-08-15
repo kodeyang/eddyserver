@@ -37,7 +37,11 @@ void FolderView::refreshFolders(DataSource *data_source)
 		else
 		{
 			QListWidgetItem *item = new QListWidgetItem(QIcon(":/images/folder.png"), categorys[idx], this);
-			item->setFlags(Qt::ItemIsEnabled | Qt::ItemIsEditable);
+			item->setFlags(Qt::ItemIsSelectable
+						   | Qt::ItemIsUserCheckable
+						   | Qt::ItemIsEnabled
+						   | Qt::ItemIsDragEnabled
+						   | Qt::ItemIsEditable);
 			addItem(item);
 		}
 	}
@@ -47,5 +51,10 @@ void FolderView::refreshFolders(DataSource *data_source)
 		QListWidgetItem *item = takeItem(idx);
 		removeItemWidget(item);
 		delete item;
+	}
+
+	if (max_size > 0)
+	{
+		setItemSelected(item(0), true);
 	}
 }
