@@ -34,17 +34,17 @@ public:
 	void importData(const QByteArray &bytes);
 
 public:
-	bool deleteCategory(size_t index);
+	bool deleteFolder(size_t index);
 
-	bool addCategory(const QString &name);
+	bool addFolder(const QString &name);
 
-	bool renameCategory(size_t index, const QString &new_name);
+	bool renameFolder(size_t index, const QString &new_name);
 
-	QVector<QString> categorys() const;
+	const QVector<QString>& folderList() const;
 
-	bool hasCategory(const QString &name) const;
+	bool hasFolder(const QString &name) const;
 
 private:
-	QVector<QString> category_order_;
+	QVector<QString> folder_order_;
 	QMap<QString, QVector<PWData>> all_records_;
 };

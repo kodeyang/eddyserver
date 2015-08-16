@@ -1,10 +1,10 @@
-﻿#include "DoccView.h"
+﻿#include "DocTableView.h"
 
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QStyledItemDelegate>
 
 
-DoccView::DoccView(QWidget *parent)
+DocTableView::DocTableView(QWidget *parent)
 	: QTableWidget(parent)
 {
 	setColumnCount(5);
@@ -19,7 +19,7 @@ DoccView::DoccView(QWidget *parent)
 	setHorizontalHeaderLabels(header);
 }
 
-DoccView::~DoccView()
+DocTableView::~DocTableView()
 {
 
 }

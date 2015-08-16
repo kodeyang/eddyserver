@@ -1,15 +1,15 @@
-﻿#include "FolderView.h"
+﻿#include "FolderListView.h"
 
 #include <QtWidgets/QScrollBar>
 
 
-FolderView::FolderView(QWidget *parent)
+FolderListView::FolderListView(QWidget *parent)
 	: QListWidget(parent)
 {
 	addScrollBarWidget(new QScrollBar(), Qt::AlignRight);
 }
 
-FolderView::~FolderView()
+FolderListView::~FolderListView()
 {
 
 }

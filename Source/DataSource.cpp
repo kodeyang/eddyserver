@@ -31,14 +31,14 @@ QByteArray DataSource::exportData() const
 	rapidjson::Document::AllocatorType &allocator = doc.GetAllocator();
 	doc.SetObject();
 
-	for (auto &category_name : category_order_)
+	for (auto &folder_name : folder_order_)
 	{
-		auto category_itr = all_records_.find(category_name);
-		Q_ASSERT(category_itr != all_records_.end());
+		auto folder_itr = all_records_.find(folder_name);
+		Q_ASSERT(folder_itr != all_records_.end());
 
 		rapidjson::Value json_array;
 		json_array.SetArray();
-		for (auto &pw_data : *category_itr)
+		for (auto &pw_data : *folder_itr)
 		{
 			rapidjson::Value json_object;
 			json_object.SetObject();
@@ -52,7 +52,7 @@ QByteArray DataSource::exportData() const
 			json_array.PushBack(json_object, allocator);
 		}
 
-		doc.AddMember(ToJsonString(category_name, allocator), json_array, allocator);
+		doc.AddMember(ToJsonString(folder_name, allocator), json_array, allocator);
 	}
 
 	rapidjson::StringBuffer buffer;
@@ -65,7 +65,7 @@ QByteArray DataSource::exportData() const
 void DataSource::importData(const QByteArray &bytes)
 {
 	all_records_.clear();
-	category_order_.clear();
+	folder_order_.clear();
 
 	rapidjson::Document doc;
 	doc.Parse<0>(bytes.data());
@@ -104,18 +104,18 @@ void DataSource::importData(const QByteArray &bytes)
 						}
 					}
 				}
-				category_order_.push_back(itr->name.GetString());
+				folder_order_.push_back(itr->name.GetString());
 			}
 		}
 	}
 }
 
-QVector<QString> DataSource::categorys() const
+const QVector<QString>& DataSource::folderList() const
 {
-	return category_order_;
+	return folder_order_;
 }
 
-bool DataSource::addCategory(const QString &name)
+bool DataSource::addFolder(const QString &name)
 {
 	auto itr = all_records_.find(name);
 	if (itr != all_records_.end())
@@ -124,25 +124,25 @@ bool DataSource::addCategory(const QString &name)
 	}
 	else
 	{
-		category_order_.push_back(name);
+		folder_order_.push_back(name);
 		all_records_.insert(name, std::move(QVector<PWData>()));
 		return true;
 	}
 }
 
-bool DataSource::deleteCategory(size_t index)
+bool DataSource::deleteFolder(size_t index)
 {
-	if (index < category_order_.size())
+	if (index < folder_order_.size())
 	{
-		QString &category_name = category_order_[index];
-		auto category_itr = all_records_.find(category_name);
-		Q_ASSERT(category_itr != all_records_.end());
+		QString &folder_name = folder_order_[index];
+		auto folder_itr = all_records_.find(folder_name);
+		Q_ASSERT(folder_itr != all_records_.end());
 
-		all_records_.erase(category_itr);
+		all_records_.erase(folder_itr);
 
-		auto order_itr = qFind(category_order_.begin(), category_order_.end(), category_name);
-		Q_ASSERT(order_itr != category_order_.end());
-		category_order_.erase(order_itr);
+		auto order_itr = qFind(folder_order_.begin(), folder_order_.end(), folder_name);
+		Q_ASSERT(order_itr != folder_order_.end());
+		folder_order_.erase(order_itr);
 
 		return true;
 	}
@@ -152,28 +152,28 @@ bool DataSource::deleteCategory(size_t index)
 	}
 }
 
-bool DataSource::renameCategory(size_t index, const QString &new_name)
+bool DataSource::renameFolder(size_t index, const QString &new_name)
 {
-	if (index < category_order_.size())
+	if (index < folder_order_.size())
 	{
-		QString &category_name = category_order_[index];
+		QString &folder_name = folder_order_[index];
 
-		if (category_name == new_name)
+		if (folder_name == new_name)
 		{
 			return false;
 		}
 
-		auto category_itr = all_records_.find(category_name);
-		Q_ASSERT(category_itr != all_records_.end());
+		auto folder_itr = all_records_.find(folder_name);
+		Q_ASSERT(folder_itr != all_records_.end());
 
 		if (all_records_.find(new_name) == all_records_.end())
 		{
-			QVector<PWData> records(std::move(*category_itr));
-			all_records_.erase(category_itr);
+			QVector<PWData> records(std::move(*folder_itr));
+			all_records_.erase(folder_itr);
 			all_records_.insert(new_name, std::move(records));
 
-			auto order_itr = qFind(category_order_.begin(), category_order_.end(), category_name);
-			Q_ASSERT(order_itr != category_order_.end());
+			auto order_itr = qFind(folder_order_.begin(), folder_order_.end(), folder_name);
+			Q_ASSERT(order_itr != folder_order_.end());
 			*order_itr = new_name;
 
 			return true;
