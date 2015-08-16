@@ -25,11 +25,11 @@ MainWindow::MainWindow(QWidget *parent, Qt::WindowFlags flags)
 	auto splitter = new QSplitter(this);
 	setCentralWidget(splitter);
 
-	auto folder_list = new FolderListView(data_source_, this);
-	splitter->addWidget(folder_list);
+	FolderListView *folderView = new FolderListView(data_source_, this);
+	splitter->addWidget(folderView);
 
-	auto doc_list = new DocTableView(this);
-	splitter->addWidget(doc_list);
+	auto docView = new DocTableView(this);
+	splitter->addWidget(docView);
 
 	splitter->setStretchFactor(0, 20);
 	splitter->setStretchFactor(1, 80);

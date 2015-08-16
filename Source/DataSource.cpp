@@ -16,6 +16,7 @@ rapidjson::Value ToJsonString(const QString &text, rapidjson::Document::Allocato
 }
 
 DataSource::DataSource()
+	: current_index_(-1)
 {
 
 }
@@ -64,6 +65,7 @@ QByteArray DataSource::exportData() const
 
 void DataSource::importData(const QByteArray &bytes)
 {
+	current_index_ = -1;
 	all_records_.clear();
 	folder_order_.clear();
 
@@ -108,6 +110,13 @@ void DataSource::importData(const QByteArray &bytes)
 			}
 		}
 	}
+
+	if (!all_records_.empty())
+	{
+		current_index_ = 0;
+	}
+
+	emit refresh();
 }
 
 const QVector<QString>& DataSource::folderList() const
@@ -126,6 +135,8 @@ bool DataSource::addFolder(const QString &name)
 	{
 		folder_order_.push_back(name);
 		all_records_.insert(name, std::move(QVector<PWData>()));
+
+		emit refresh();
 		return true;
 	}
 }
@@ -144,6 +155,7 @@ bool DataSource::deleteFolder(size_t index)
 		Q_ASSERT(order_itr != folder_order_.end());
 		folder_order_.erase(order_itr);
 
+		emit refresh();
 		return true;
 	}
 	else
@@ -176,6 +188,7 @@ bool DataSource::renameFolder(size_t index, const QString &new_name)
 			Q_ASSERT(order_itr != folder_order_.end());
 			*order_itr = new_name;
 
+			emit refresh();
 			return true;
 		}
 	}

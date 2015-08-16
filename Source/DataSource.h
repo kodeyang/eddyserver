@@ -37,7 +37,11 @@ public:
 
 	bool hasFolder(const QString &name) const;
 
+Q_SIGNALS:
+	void refresh();
+
 private:
+	int current_index_;
 	QVector<QString> folder_order_;
 	QMap<QString, QVector<PWData>> all_records_;
 };
