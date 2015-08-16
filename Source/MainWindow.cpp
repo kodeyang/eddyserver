@@ -36,10 +36,6 @@ MainWindow::MainWindow(QWidget *parent, Qt::WindowFlags flags)
 
 	statusBar();
 	setMinimumSize(QSize(840, 460));
-
-	QObject::connect(data_source_.data(), &DataSource::message, this, &MainWindow::popupMessage);
-	QObject::connect(data_source_.data(), &DataSource::refresh, folder_list, &FolderView::refreshFolders);
-	QObject::connect(folder_list, &FolderView::renameFolder, data_source_.data(), &DataSource::renameCategory);
 }
 
 MainWindow::~MainWindow()

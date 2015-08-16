@@ -108,32 +108,29 @@ void DataSource::importData(const QByteArray &bytes)
 			}
 		}
 	}
-
-	emit refresh(this);
 }
 
-QVector<QString> DataSource::getCategorys() const
+QVector<QString> DataSource::categorys() const
 {
 	return category_order_;
 }
 
-void DataSource::addCategory(const QString &name)
+bool DataSource::addCategory(const QString &name)
 {
 	auto itr = all_records_.find(name);
 	if (itr != all_records_.end())
 	{
-		emit refresh(this);
-		emit message(CATEGORY_EXISTS, tr("category already exists, add category failed"));
+		return false;
 	}
 	else
 	{
 		category_order_.push_back(name);
 		all_records_.insert(name, std::move(QVector<PWData>()));
-		emit refresh(this);
+		return true;
 	}
 }
 
-void DataSource::deleteCategory(size_t index)
+bool DataSource::deleteCategory(size_t index)
 {
 	if (index < category_order_.size())
 	{
@@ -147,22 +144,24 @@ void DataSource::deleteCategory(size_t index)
 		Q_ASSERT(order_itr != category_order_.end());
 		category_order_.erase(order_itr);
 
-		emit refresh(this);
+		return true;
 	}
 	else
 	{
-		emit refresh(this);
-		emit message(CATEGORY_NOT_EXISTS, tr("category does not exist failed to delete category"));
+		return false;
 	}
 }
 
-void DataSource::renameCategory(size_t index, const QString &new_name)
+bool DataSource::renameCategory(size_t index, const QString &new_name)
 {
 	if (index < category_order_.size())
 	{
 		QString &category_name = category_order_[index];
 
-		if (category_name == new_name) return;
+		if (category_name == new_name)
+		{
+			return false;
+		}
 
 		auto category_itr = all_records_.find(category_name);
 		Q_ASSERT(category_itr != all_records_.end());
@@ -177,17 +176,8 @@ void DataSource::renameCategory(size_t index, const QString &new_name)
 			Q_ASSERT(order_itr != category_order_.end());
 			*order_itr = new_name;
 
-			emit refresh(this);
-		}
-		else
-		{
-			emit refresh(this);
-			emit message(CATEGORY_EXISTS, tr("existing category with the same name, rename category failed"));
+			return true;
 		}
 	}
-	else
-	{
-		emit refresh(this);
-		emit message(CATEGORY_NOT_EXISTS, tr("category does not exist, rename category failed"));
-	}
+	return false;
 }

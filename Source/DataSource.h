@@ -30,18 +30,19 @@ public:
 
 public:
 	QByteArray exportData() const;
+
 	void importData(const QByteArray &bytes);
 
-	QVector<QString> getCategorys() const;
+public:
+	bool deleteCategory(size_t index);
 
-public Q_SLOTS:
-	void deleteCategory(size_t index);
-	void addCategory(const QString &name);
-	void renameCategory(size_t index, const QString &new_name);
+	bool addCategory(const QString &name);
 
-Q_SIGNALS:
-	void refresh(DataSource *data_source);
-	void message(DataSource::MessageCode code, const QString &details);
+	bool renameCategory(size_t index, const QString &new_name);
+
+	QVector<QString> categorys() const;
+
+	bool hasCategory(const QString &name) const;
 
 private:
 	QVector<QString> category_order_;
