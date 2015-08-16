@@ -22,12 +22,10 @@ private Q_SLOTS:
 
 	void saveFile();
 
-	void popupMessage(DataSource::MessageCode code, const QString &details);
-
 private:
 	QAction* new_action_;
 	QAction* open_action_;
 	QAction* save_action_;
 	QString current_file_;
-	QScopedPointer<DataSource> data_source_;
+	QSharedPointer<DataSource> data_source_;
 };

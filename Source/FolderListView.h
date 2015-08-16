@@ -1,13 +1,15 @@
 ﻿#pragma once
 
-#include <QtWidgets/QListWidget>
+#include <QtWidgets/QListView>
 
+class DataSource;
 
-class FolderListView : public QListWidget
+class FolderListView : public QListView
 {
 	Q_OBJECT
 
 public:
-	explicit FolderListView(QWidget *parent = 0);
+	explicit FolderListView(QSharedPointer<DataSource> data, QWidget *parent = 0);
+
 	~FolderListView();
 };

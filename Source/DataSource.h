@@ -18,13 +18,6 @@ class DataSource : public QObject
 	Q_OBJECT
 
 public:
-	enum MessageCode
-	{
-		CATEGORY_EXISTS,
-		CATEGORY_NOT_EXISTS,
-	};
-
-public:
 	explicit DataSource();
 	~DataSource();
 

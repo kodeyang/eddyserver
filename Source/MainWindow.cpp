@@ -25,7 +25,7 @@ MainWindow::MainWindow(QWidget *parent, Qt::WindowFlags flags)
 	auto splitter = new QSplitter(this);
 	setCentralWidget(splitter);
 
-	auto folder_list = new FolderListView(this);
+	auto folder_list = new FolderListView(data_source_, this);
 	splitter->addWidget(folder_list);
 
 	auto doc_list = new DocTableView(this);
@@ -84,13 +84,4 @@ void MainWindow::saveFile()
 		file.open(QIODevice::OpenModeFlag::WriteOnly);
 		file.write(data_source_->exportData());
 	}
-}
-
-void MainWindow::popupMessage(DataSource::MessageCode code, const QString &details)
-{
-	QMessageBox message_box(this);
-	message_box.setWindowTitle(tr("Tips"));
-	message_box.addButton(tr("OK"), QMessageBox::ActionRole);
-	message_box.setText(details);
-	message_box.exec();
 }
