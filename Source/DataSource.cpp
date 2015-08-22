@@ -1,194 +1,174 @@
 ﻿#include "DataSource.h"
 
-#include <QtGlobal>
-#include <QtAlgorithms>
-
-#include "rapidjson/writer.h" 
-#include "rapidjson/document.h"
-#include "rapidjson/stringbuffer.h" 
+#include <QJsonArray>
+#include <QJsonObject>
+#include <QJsonDocument>
 
 
-rapidjson::Value ToJsonString(const QString &text, rapidjson::Document::AllocatorType &allocator)
+void DataSource::clear()
 {
-	rapidjson::Value json_string;
-	json_string.SetString(text.toStdString().c_str(), allocator);
-	return json_string;
-}
+	if (!category_order_.empty())
+	{
+		const size_t category_count = category_order_.size();
+		for (size_t c_index = category_count - 1; c_index > 0; --c_index)
+		{
+			auto itr = all_password_data_.find(category_order_[c_index]);
+			const size_t document_count = itr->size();
 
-DataSource::DataSource()
-	: current_index_(-1)
-{
+			for (size_t d_index = document_count - 1; d_index > 0; --d_index)
+			{
+				itr->pop_back();
+				emit documentDeleted(c_index, d_index);
+			}
 
-}
-
-DataSource::~DataSource()
-{
-
+			category_order_.pop_back();
+			emit categoryDeleted(c_index);
+			all_password_data_.erase(itr);
+		}
+	}
 }
 
 QByteArray DataSource::exportData() const
 {
-	rapidjson::Document doc;
-	rapidjson::Document::AllocatorType &allocator = doc.GetAllocator();
-	doc.SetObject();
-
-	for (auto &folder_name : folder_order_)
+	QJsonObject category;
+	QJsonDocument document;
+	for (auto &category_name : category_order_)
 	{
-		auto folder_itr = all_records_.find(folder_name);
-		Q_ASSERT(folder_itr != all_records_.end());
-
-		rapidjson::Value json_array;
-		json_array.SetArray();
-		for (auto &pw_data : *folder_itr)
+		QJsonArray json_array;
+		auto itr = all_password_data_.find(category_name);
+		for (size_t index = 0; index < itr->size(); ++index)
 		{
-			rapidjson::Value json_object;
-			json_object.SetObject();
-
-			json_object.AddMember("title", ToJsonString(pw_data.title, allocator), allocator);
-			json_object.AddMember("user_name", ToJsonString(pw_data.user_name, allocator), allocator);
-			json_object.AddMember("pass_word", ToJsonString(pw_data.pass_word, allocator), allocator);
-			json_object.AddMember("url", ToJsonString(pw_data.url, allocator), allocator);
-			json_object.AddMember("notes", ToJsonString(pw_data.notes, allocator), allocator);
-
-			json_array.PushBack(json_object, allocator);
+			QJsonObject doc_object;
+			const PassWordData &data = itr->at(index);
+			doc_object.insert("title", data.title);
+			doc_object.insert("user_name", data.user_name);
+			doc_object.insert("pass_word", data.pass_word);
+			doc_object.insert("url", data.url);
+			doc_object.insert("notes", data.notes);
+			json_array.push_back(doc_object);
 		}
-
-		doc.AddMember(ToJsonString(folder_name, allocator), json_array, allocator);
+		category.insert(category_name, json_array);
 	}
-
-	rapidjson::StringBuffer buffer;
-	rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
-	doc.Accept(writer);
-
-	return QByteArray(buffer.GetString(), buffer.GetSize());
+	document.setObject(category);
+	return document.toJson();
 }
 
 void DataSource::importData(const QByteArray &bytes)
 {
-	current_index_ = -1;
-	all_records_.clear();
-	folder_order_.clear();
+	clear();
 
-	rapidjson::Document doc;
-	doc.Parse<0>(bytes.data());
-
-	if (!doc.HasParseError())
+	QJsonParseError error;
+	QJsonDocument document = QJsonDocument::fromJson(bytes, &error);
+	if (QJsonParseError::NoError == error.error && document.isObject())
 	{
-		for (auto itr = doc.MemberBegin(); itr != doc.MemberEnd(); ++itr)
+		for (QJsonObject::const_iterator c_itr = document.object().constBegin(); c_itr != document.object().constEnd(); ++c_itr)
 		{
-			if (itr->name.IsString() && itr->value.IsArray())
+			if (c_itr->isArray())
 			{
-				const rapidjson::Value &json_array = itr->value;
-				for (size_t idx = 0; idx < json_array.Size(); ++idx)
+				category_order_.push_back(c_itr.key());
+				QJsonArray doc_array = c_itr->toArray();
+				auto &category = all_password_data_[c_itr.key()];
+
+				emit categoryCreated(c_itr.key());
+
+				for (size_t index = 0; index < doc_array.size(); ++index)
 				{
-					if (json_array[idx].IsObject())
-					{
-						const rapidjson::Value &json_object = json_array[idx];
-						if (json_object.HasMember("title")
-							&& json_object.HasMember("user_name")
-							&& json_object.HasMember("pass_word")
-							&& json_object.HasMember("url")
-							&& json_object.HasMember("notes")
-							&& json_object["title"].IsString()
-							&& json_object["user_name"].IsString()
-							&& json_object["pass_word"].IsString()
-							&& json_object["url"].IsString()
-							&& json_object["notes"].IsString()
-							)
-						{
-							PWData data;
-							data.title = json_object["title"].GetString();
-							data.user_name = json_object["user_name"].GetString();
-							data.pass_word = json_object["pass_word"].GetString();
-							data.url = json_object["url"].GetString();
-							data.notes = json_object["notes"].GetString();
-							all_records_[itr->name.GetString()].push_back(std::move(data));
-						}
-					}
+					PassWordData data;
+					QJsonObject doc = doc_array[index].toObject();
+					data.title = doc["title"].toString();		
+					data.user_name = doc["user_name"].toString();
+					data.pass_word = doc["pass_word"].toString();
+					data.url = doc["url"].toString();
+					data.notes = doc["notes"].toString();
+					category.push_back(std::move(data));
+
+					emit documentCreated(category_order_.size() - 1, category.back());
 				}
-				folder_order_.push_back(itr->name.GetString());
 			}
 		}
 	}
-
-	if (!all_records_.empty())
-	{
-		current_index_ = 0;
-	}
-
-	emit refresh();
 }
 
-const QVector<QString>& DataSource::folderList() const
+bool DataSource::hasCategory(const QString &name)
 {
-	return folder_order_;
+	return all_password_data_.find(name) != all_password_data_.end();
 }
 
-bool DataSource::addFolder(const QString &name)
+bool DataSource::deleteCategory(const size_t index)
 {
-	auto itr = all_records_.find(name);
-	if (itr != all_records_.end())
+	if (index < all_password_data_.size())
 	{
-		return false;
-	}
-	else
-	{
-		folder_order_.push_back(name);
-		all_records_.insert(name, std::move(QVector<PWData>()));
-
-		emit refresh();
+		auto itr = all_password_data_.find(category_order_[index]);
+		all_password_data_.erase(itr);
+		emit categoryDeleted(index);
 		return true;
 	}
+	return false;
 }
 
-bool DataSource::deleteFolder(size_t index)
+bool DataSource::createCategory(const QString &name)
 {
-	if (index < folder_order_.size())
+	if (!hasCategory(name))
 	{
-		QString &folder_name = folder_order_[index];
-		auto folder_itr = all_records_.find(folder_name);
-		Q_ASSERT(folder_itr != all_records_.end());
-
-		all_records_.erase(folder_itr);
-
-		auto order_itr = qFind(folder_order_.begin(), folder_order_.end(), folder_name);
-		Q_ASSERT(order_itr != folder_order_.end());
-		folder_order_.erase(order_itr);
-
-		emit refresh();
+		category_order_.push_back(name);
+		all_password_data_.insert(name, QVector<PassWordData>());
+		emit categoryCreated(name);
 		return true;
 	}
-	else
-	{
-		return false;
-	}
+	return false;
 }
 
-bool DataSource::renameFolder(size_t index, const QString &new_name)
+bool DataSource::modifieCategory(const size_t index, const QString &new_name)
 {
-	if (index < folder_order_.size())
+	if (index < all_password_data_.size() && !hasCategory(new_name))
 	{
-		QString &folder_name = folder_order_[index];
+		auto itr = all_password_data_.find(category_order_[index]);
+		QVector<PassWordData> temp(std::move((*itr)));
+		all_password_data_.erase(itr);
+		category_order_[index] = new_name;
+		all_password_data_.insert(new_name, std::move(temp));
+		emit categoryModified(index, new_name);
+		return true;
+	}
+	return false;
+}
 
-		if (folder_name == new_name)
+bool DataSource::deleteDocument(const size_t category_index, const size_t doc_index)
+{
+	if (category_index < all_password_data_.size())
+	{
+		auto itr = all_password_data_.find(category_order_[category_index]);
+		if (doc_index < itr->size())
 		{
-			return false;
+			itr->erase(itr->begin() + doc_index);
+			emit deleteDocument(category_index, doc_index);
+			return true;
 		}
+	}
+	return false;
+}
 
-		auto folder_itr = all_records_.find(folder_name);
-		Q_ASSERT(folder_itr != all_records_.end());
+bool DataSource::createDocument(const size_t category_index, const PassWordData &doc)
+{
+	if (category_index < all_password_data_.size())
+	{
+		auto itr = all_password_data_.find(category_order_[category_index]);
+		itr->push_back(doc);
+		emit documentCreated(category_index, doc);
+		return true;
+	}
+	return false;
+}
 
-		if (all_records_.find(new_name) == all_records_.end())
+bool DataSource::modifieDocument(const size_t category_index, const size_t doc_index, const PassWordData &doc)
+{
+	if (category_index < all_password_data_.size())
+	{
+		auto itr = all_password_data_.find(category_order_[category_index]);
+		if (doc_index < itr->size())
 		{
-			QVector<PWData> records(std::move(*folder_itr));
-			all_records_.erase(folder_itr);
-			all_records_.insert(new_name, std::move(records));
-
-			auto order_itr = qFind(folder_order_.begin(), folder_order_.end(), folder_name);
-			Q_ASSERT(order_itr != folder_order_.end());
-			*order_itr = new_name;
-
-			emit refresh();
+			itr->operator[](doc_index) = doc;
+			emit modifieDocument(category_index, doc_index, doc);
 			return true;
 		}
 	}

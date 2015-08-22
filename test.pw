@@ -1,1 +1,29 @@
-{"QQ密码":[{"title":"默认标题","user_name":" 默认用户名","pass_word":" ******","url":" qq.com","notes":" 无"}],"网银密码":[{"title":"默认标题","user_name":" 默认用户名","pass_word":" ******","url":" qq.com","notes":" 无"}],"网站密码":[{"title":"默认标题","user_name":" 默认用户名","pass_word":" ******","url":" qq.com","notes":" 无"}]}
+{
+    "QQ密码": [
+        {
+            "notes": " 无",
+            "pass_word": " ******",
+            "title": "默认标题",
+            "url": " qq.com",
+            "user_name": " 默认用户名"
+        }
+    ],
+    "网站密码": [
+        {
+            "notes": " 无",
+            "pass_word": " ******",
+            "title": "默认标题",
+            "url": " qq.com",
+            "user_name": " 默认用户名"
+        }
+    ],
+    "网银密码": [
+        {
+            "notes": " 无",
+            "pass_word": " ******",
+            "title": "默认标题",
+            "url": " qq.com",
+            "user_name": " 默认用户名"
+        }
+    ]
+}

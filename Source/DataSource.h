@@ -3,8 +3,9 @@
 #include <QMap>
 #include <QVector>
 #include <QObject>
+#include <QSharedPointer>
 
-struct PWData
+struct PassWordData
 {
 	QString title;
 	QString user_name;
@@ -13,35 +14,52 @@ struct PWData
 	QString notes;
 };
 
-class DataSource : public QObject
+typedef QSharedPointer<class DataSource> database_ptr;
+
+class DataSource final : public QObject
 {
 	Q_OBJECT
 
 public:
-	explicit DataSource();
-	~DataSource();
+	explicit DataSource() = default;
+	~DataSource() = default;
 
 public:
+	void clear();
+
 	QByteArray exportData() const;
 
 	void importData(const QByteArray &bytes);
 
 public:
-	bool deleteFolder(size_t index);
+	bool hasCategory(const QString &name);
 
-	bool addFolder(const QString &name);
+	bool deleteCategory(const size_t index);
 
-	bool renameFolder(size_t index, const QString &new_name);
+	bool createCategory(const QString &name);
 
-	const QVector<QString>& folderList() const;
+	bool modifieCategory(const size_t index, const QString &new_name);
 
-	bool hasFolder(const QString &name) const;
+	bool deleteDocument(const size_t category_index, const size_t doc_index);
+
+	bool createDocument(const size_t category_index, const PassWordData &doc);
+
+	bool modifieDocument(const size_t category_index, const size_t doc_index, const PassWordData &doc);
 
 Q_SIGNALS:
-	void refresh();
+	void categoryDeleted(const size_t index);
+
+	void categoryCreated(const QString &name);
+
+	void categoryModified(const size_t index, const QString &new_name);
+
+	void documentDeleted(const size_t category_index, const size_t doc_index);
+
+	void documentCreated(const size_t category_index, const PassWordData &doc);
+
+	void documentModified(const size_t category_index, const size_t doc_index, const PassWordData &doc);
 
 private:
-	int current_index_;
-	QVector<QString> folder_order_;
-	QMap<QString, QVector<PWData>> all_records_;
+	QVector<QString>						category_order_;
+	QMap<QString, QVector<PassWordData>>	all_password_data_;
 };

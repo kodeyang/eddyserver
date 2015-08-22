@@ -1,8 +1,7 @@
 <RCC>
     <qresource prefix="/images">
-        <file>doc.png</file>
-        <file>folder.png</file>
-        <file>folder_new.png</file>
-        <file>folder_open.png</file>
+        <file>file-new.png</file>
+        <file>file-open.png</file>
+        <file>file-save.png</file>
     </qresource>
 </RCC>
