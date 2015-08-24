@@ -10,19 +10,19 @@ void DataSource::clear()
 	if (!category_order_.empty())
 	{
 		const size_t category_count = category_order_.size();
-		for (size_t c_index = category_count - 1; c_index > 0; --c_index)
+		for (size_t c_index = category_count; c_index > 0; --c_index)
 		{
-			auto itr = all_password_data_.find(category_order_[c_index]);
+			auto itr = all_password_data_.find(category_order_[c_index - 1]);
 			const size_t document_count = itr->size();
 
-			for (size_t d_index = document_count - 1; d_index > 0; --d_index)
+			for (size_t d_index = document_count; d_index > 0; --d_index)
 			{
 				itr->pop_back();
-				emit documentDeleted(c_index, d_index);
+				emit documentDeleted(c_index - 1, d_index - 1);
 			}
 
 			category_order_.pop_back();
-			emit categoryDeleted(c_index);
+			emit categoryDeleted(c_index - 1);
 			all_password_data_.erase(itr);
 		}
 	}

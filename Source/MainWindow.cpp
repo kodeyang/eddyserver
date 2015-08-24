@@ -13,8 +13,8 @@
 MainWindow::MainWindow(QWidget *parent, Qt::WindowFlags flags)
 	: QMainWindow(parent, flags)
 	, database_(new DataSource())
-	, category_view_(new CategoryView(this))
 	, document_view_(new DocumentTableView(this))
+	, category_view_(new CategoryView(database_, this))
 {
 	setupFileActions();
 	setMinimumSize(QSize(640, 480));
@@ -27,6 +27,10 @@ MainWindow::MainWindow(QWidget *parent, Qt::WindowFlags flags)
 	setCentralWidget(splitter);
 
 	statusBar();
+
+	connect(database_.data(), &DataSource::categoryCreated, category_view_, &CategoryView::categoryCreated);
+	connect(database_.data(), &DataSource::categoryDeleted, category_view_, &CategoryView::categoryDeleted);
+	connect(database_.data(), &DataSource::categoryModified, category_view_, &CategoryView::categoryModified);
 }
 
 MainWindow::~MainWindow()
