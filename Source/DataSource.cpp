@@ -89,9 +89,18 @@ void DataSource::importData(const QByteArray &bytes)
 	}
 }
 
-bool DataSource::hasCategory(const QString &name)
+bool DataSource::hasCategory(const QString &name) const
 {
 	return all_password_data_.find(name) != all_password_data_.end();
+}
+
+QString DataSource::category(const size_t index) const
+{
+	if (index < all_password_data_.size())
+	{
+		return category_order_[index];
+	}
+	return QString();
 }
 
 bool DataSource::deleteCategory(const size_t index)

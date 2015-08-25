@@ -5,12 +5,25 @@ CategoryView::CategoryView(database_ptr db, QWidget *parent)
 	: QListWidget(parent)
 	, database_(db)
 {
-
+	connect(this, &QListWidget::itemChanged, this, &CategoryView::onItemModified);
 }
 
 CategoryView::~CategoryView()
 {
 
+}
+
+void CategoryView::onItemModified(QListWidgetItem *item)
+{
+	int index = row(item);
+	if (!database_->hasCategory(item->text()))
+	{
+		database_->modifieCategory(index, item->text());
+	}
+	else
+	{
+		item->setText(database_->category(index));
+	}
 }
 
 void CategoryView::categoryDeleted(const size_t index)

@@ -32,7 +32,9 @@ public:
 	void importData(const QByteArray &bytes);
 
 public:
-	bool hasCategory(const QString &name);
+	bool hasCategory(const QString &name) const;
+
+	QString category(const size_t index) const;
 
 	bool deleteCategory(const size_t index);
 

@@ -16,6 +16,9 @@ public Q_SLOTS:
 
 	void categoryModified(const size_t index, const QString &new_name);
 
+private Q_SLOTS:
+	void onItemModified(QListWidgetItem *item);
+
 private:
 	database_ptr database_;
 };
