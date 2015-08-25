@@ -1,11 +1,17 @@
 ﻿#include "CategoryView.h"
+#include <QtWidgets/QMenu>
 
 
 CategoryView::CategoryView(database_ptr db, QWidget *parent)
 	: QListWidget(parent)
+	, right_menu_(nullptr)
+	, blank_right_menu_(nullptr)
 	, database_(db)
 {
-	connect(this, &QListWidget::itemChanged, this, &CategoryView::onItemModified);
+	setupMenus();
+	setContextMenuPolicy(Qt::CustomContextMenu);
+	connect(this, &QListWidget::itemChanged, this, &CategoryView::itemModified);
+	connect(this, &QWidget::customContextMenuRequested, this, &CategoryView::rightClickMenu);
 }
 
 CategoryView::~CategoryView()
@@ -13,7 +19,37 @@ CategoryView::~CategoryView()
 
 }
 
-void CategoryView::onItemModified(QListWidgetItem *item)
+void CategoryView::setupMenus()
+{
+	right_menu_ = new QMenu(this);
+	blank_right_menu_ = new QMenu(this);
+
+	QAction *new_category = new QAction(tr("New Category"), this);
+	blank_right_menu_->addAction(new_category);
+
+	QAction *new_document = new QAction(tr("New Document"), this);
+	right_menu_->addAction(new_document);
+
+	QAction *del_category = new QAction(tr("Delete Category"), this);
+	right_menu_->addAction(del_category);
+
+	QAction *rename_category = new QAction(tr("Rename Category"), this);
+	right_menu_->addAction(rename_category);
+}
+
+void CategoryView::rightClickMenu(const QPoint &pos)
+{
+	if (QListWidgetItem *item_ptr = itemAt(pos))
+	{
+		right_menu_->exec(QCursor::pos());
+	}
+	else
+	{
+		blank_right_menu_->exec(QCursor::pos());
+	}
+}
+
+void CategoryView::itemModified(QListWidgetItem *item)
 {
 	int index = row(item);
 	if (!database_->hasCategory(item->text()))

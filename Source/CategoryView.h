@@ -10,6 +10,8 @@ public:
 	~CategoryView();
 
 public Q_SLOTS:
+	void rightClickMenu(const QPoint &pos);
+
 	void categoryDeleted(const size_t index);
 
 	void categoryCreated(const QString &name);
@@ -17,8 +19,13 @@ public Q_SLOTS:
 	void categoryModified(const size_t index, const QString &new_name);
 
 private Q_SLOTS:
-	void onItemModified(QListWidgetItem *item);
+	void itemModified(QListWidgetItem *item);
 
 private:
-	database_ptr database_;
+	void setupMenus();
+
+private:
+	QMenu*			right_menu_;
+	QMenu*			blank_right_menu_;
+	database_ptr	database_;
 };
