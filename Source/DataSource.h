@@ -27,6 +27,8 @@ public:
 public:
 	void clear();
 
+	bool empty() const;
+
 	QByteArray exportData() const;
 
 	void importData(const QByteArray &bytes);

@@ -28,6 +28,11 @@ void DataSource::clear()
 	}
 }
 
+bool DataSource::empty() const
+{
+	return all_password_data_.empty();
+}
+
 QByteArray DataSource::exportData() const
 {
 	QJsonObject category;

@@ -72,7 +72,8 @@ void MainWindow::setupFileActions()
 
 void MainWindow::newFile()
 {
-
+	database_->clear();
+	curr_opened_file_.clear();
 }
 
 void MainWindow::openFile()
@@ -93,5 +94,16 @@ void MainWindow::saveFile()
 		QFile file(curr_opened_file_);
 		file.open(QIODevice::ReadWrite);
 		file.write(database_->exportData());
+	}
+	else if (!database_->empty())
+	{
+		QString out_file = QFileDialog::getSaveFileName(this, QStringLiteral("保存"), "untitled.pw", "Password files (*.pw)");
+		if (!out_file.isEmpty())
+		{
+			QFile file(out_file);
+			file.open(QIODevice::WriteOnly);
+			file.write(database_->exportData());
+			curr_opened_file_ = out_file;
+		}
 	}
 }

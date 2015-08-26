@@ -28,6 +28,8 @@ private:
 
 	void deleteCategory();
 
+	void renameCategory();
+
 private:
 	QMenu*			right_menu_;
 	QMenu*			blank_right_menu_;

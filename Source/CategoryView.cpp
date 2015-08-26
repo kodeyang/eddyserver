@@ -26,19 +26,21 @@ void CategoryView::setupMenus()
 {
 	right_menu_ = new QMenu(this);
 	blank_right_menu_ = new QMenu(this);
+
 	QAction *new_category = new QAction(QStringLiteral("新建分类"), this);
-	connect(new_category, &QAction::triggered, this, &CategoryView::newCategory);
 	blank_right_menu_->addAction(new_category);
+	connect(new_category, &QAction::triggered, this, &CategoryView::newCategory);
 
 	QAction *new_document = new QAction(QStringLiteral("新建文档"), this);
 	right_menu_->addAction(new_document);
 
 	QAction *del_category = new QAction(QStringLiteral("删除分类"), this);
-	connect(del_category, &QAction::triggered, this, &CategoryView::deleteCategory);
 	right_menu_->addAction(del_category);
+	connect(del_category, &QAction::triggered, this, &CategoryView::deleteCategory);
 
 	QAction *rename_category = new QAction(QStringLiteral("重命名分类"), this);
 	right_menu_->addAction(rename_category);
+	connect(rename_category, &QAction::triggered, this, &CategoryView::renameCategory);
 }
 
 void CategoryView::rightClickMenu(const QPoint &pos)
@@ -96,6 +98,14 @@ void CategoryView::deleteCategory()
 			int index = row(item_ptr);
 			database_->deleteCategory(index);
 		}
+	}
+}
+
+void CategoryView::renameCategory()
+{
+	if (QListWidgetItem *item_ptr = currentItem())
+	{
+		editItem(item_ptr);
 	}
 }
 
