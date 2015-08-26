@@ -24,6 +24,10 @@ private Q_SLOTS:
 private:
 	void setupMenus();
 
+	void newCategory();
+
+	void deleteCategory();
+
 private:
 	QMenu*			right_menu_;
 	QMenu*			blank_right_menu_;

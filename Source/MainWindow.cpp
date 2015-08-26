@@ -17,13 +17,13 @@ MainWindow::MainWindow(QWidget *parent, Qt::WindowFlags flags)
 	, category_view_(new CategoryView(database_, this))
 {
 	setupFileActions();
-	setMinimumSize(QSize(640, 480));
+	setMinimumSize(QSize(960, 540));
 
 	QSplitter *splitter = new QSplitter(Qt::Horizontal, this);
 	splitter->addWidget(category_view_);
 	splitter->addWidget(document_view_);
-	splitter->setStretchFactor(0, 30);
-	splitter->setStretchFactor(1, 70);
+	splitter->setStretchFactor(0, 20);
+	splitter->setStretchFactor(1, 80);
 	setCentralWidget(splitter);
 
 	statusBar();
@@ -41,13 +41,13 @@ MainWindow::~MainWindow()
 void MainWindow::setupFileActions()
 {
 	QToolBar *tb = new QToolBar(this);
-	tb->setWindowTitle(tr("File Actions"));
+	tb->setWindowTitle(QStringLiteral("文件操作"));
 	addToolBar(tb);
 
-	QMenu *menu = new QMenu(tr("&File"), this);
+	QMenu *menu = new QMenu(QStringLiteral("文件"), this);
 	menuBar()->addMenu(menu);
 
-	QAction *new_action = new QAction(QIcon(":/images/file-new.png"), tr("&New"), this);
+	QAction *new_action = new QAction(QIcon(":/images/file-new.png"), QStringLiteral("新建"), this);
 	new_action->setShortcut(QKeySequence::New);
 	menu->addAction(new_action);
 	tb->addAction(new_action);
@@ -55,7 +55,7 @@ void MainWindow::setupFileActions()
 
 	menu->addSeparator();
 
-	QAction *open_action = new QAction(QIcon(":/images/file-open.png"), tr("&Open"), this);
+	QAction *open_action = new QAction(QIcon(":/images/file-open.png"), QStringLiteral("打开"), this);
 	open_action->setShortcut(QKeySequence::Open);
 	menu->addAction(open_action);
 	tb->addAction(open_action);
@@ -63,7 +63,7 @@ void MainWindow::setupFileActions()
 
 	menu->addSeparator();
 
-	QAction *save_action = new QAction(QIcon(":/images/file-save.png"), tr("&Save"), this);
+	QAction *save_action = new QAction(QIcon(":/images/file-save.png"), QStringLiteral("保存"), this);
 	save_action->setShortcut(QKeySequence::Save);
 	menu->addAction(save_action);
 	tb->addAction(save_action);
@@ -77,7 +77,7 @@ void MainWindow::newFile()
 
 void MainWindow::openFile()
 {
-	curr_opened_file_ = QFileDialog::getOpenFileName(this, tr("Open"), ".", tr("Password files (*.pw)"));
+	curr_opened_file_ = QFileDialog::getOpenFileName(this, QStringLiteral("打开"), ".", "Password files (*.pw)");
 	if (!curr_opened_file_.isEmpty())
 	{
 		QFile file(curr_opened_file_);
