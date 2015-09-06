@@ -79,10 +79,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="buddy\ThreadManager.cpp" />
+    <ClCompile Include="buddy\IOServiceThread.cpp" />
+    <ClCompile Include="buddy\IOServiceThreadManager.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="buddy\ThreadManager.h" />
+    <ClInclude Include="buddy\IOServiceThread.h" />
+    <ClInclude Include="buddy\IOServiceThreadManager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

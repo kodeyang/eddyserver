@@ -10,13 +10,19 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="buddy\ThreadManager.cpp">
-      <Filter>buddy</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="buddy\ThreadManager.h">
+    <ClInclude Include="buddy\IOServiceThreadManager.h">
       <Filter>buddy</Filter>
     </ClInclude>
+    <ClInclude Include="buddy\IOServiceThread.h">
+      <Filter>buddy</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="buddy\IOServiceThreadManager.cpp">
+      <Filter>buddy</Filter>
+    </ClCompile>
+    <ClCompile Include="buddy\IOServiceThread.cpp">
+      <Filter>buddy</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
