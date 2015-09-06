@@ -6,10 +6,10 @@
 
 class IOServiceThreadManager;
 
+typedef std::thread::id thread_id;
+
 class IOServiceThread final
 {
-	typedef std::thread::id thread_id;
-
 	friend class IOServiceThreadManager;
 
 public:
@@ -22,6 +22,8 @@ public:
 	void Join();
 
 	void Stop();
+
+	size_t Load() const;
 
 	template <typename CompletionHandler>
 	void Post(ASIO_MOVE_ARG(CompletionHandler) handler)
@@ -53,8 +55,8 @@ protected:
 	IOServiceThread& operator=(const IOServiceThread&) = delete;
 
 private:
-	IOServiceThreadManager&			manager_;
-	asio::io_service				io_service_;
-	std::shared_ptr<std::thread>	thread_;
-	asio::io_service::work*			work_;
+	IOServiceThreadManager&					manager_;
+	asio::io_service						io_service_;
+	std::shared_ptr<std::thread>			thread_;
+	std::unique_ptr<asio::io_service::work>	work_;
 };

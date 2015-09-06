@@ -14,7 +14,7 @@ void IOServiceThread::Run()
 {
 	if (work_ == nullptr)
 	{
-		work_ = new asio::io_service::work(io_service_);
+		work_.reset(new asio::io_service::work(io_service_));
 	}
 
 	asio::error_code error;
@@ -34,6 +34,11 @@ void IOServiceThread::RunThread()
 	}
 }
 
+size_t IOServiceThread::Load() const
+{
+	return 0;
+}
+
 void IOServiceThread::Join()
 {
 	if (thread_ != nullptr)
@@ -46,7 +51,6 @@ void IOServiceThread::Stop()
 {
 	if (work_ != nullptr)
 	{
-		delete work_;
-		work_ = nullptr;
+		work_.reset();
 	}
 }
