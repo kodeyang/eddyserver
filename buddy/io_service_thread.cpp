@@ -1,16 +1,16 @@
-﻿#include "IOServiceThread.h"
+﻿#include "io_service_thread.h"
 
 #include <iostream>
 
 
-IOServiceThread::IOServiceThread(IOServiceThreadManager &manager)
+io_service_thread::io_service_thread(io_service_thread_manager &manager)
 	: manager_(manager_)
 	, work_(nullptr)
 {
 
 }
 
-void IOServiceThread::Run()
+void io_service_thread::run()
 {
 	if (work_ == nullptr)
 	{
@@ -26,20 +26,20 @@ void IOServiceThread::Run()
 	}
 }
 
-void IOServiceThread::RunThread()
+void io_service_thread::run_thread()
 {
 	if (thread_ == nullptr)
 	{
-		thread_ = std::make_shared<std::thread>(std::bind(&IOServiceThread::Run, this));
+		thread_ = std::make_shared<std::thread>(std::bind(&io_service_thread::run, this));
 	}
 }
 
-size_t IOServiceThread::Load() const
+size_t io_service_thread::load() const
 {
 	return 0;
 }
 
-void IOServiceThread::Join()
+void io_service_thread::join()
 {
 	if (thread_ != nullptr)
 	{
@@ -47,7 +47,7 @@ void IOServiceThread::Join()
 	}
 }
 
-void IOServiceThread::Stop()
+void io_service_thread::stop()
 {
 	if (work_ != nullptr)
 	{

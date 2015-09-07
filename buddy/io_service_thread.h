@@ -4,29 +4,30 @@
 #include <memory>
 #include <asio.hpp>
 
-class IOServiceThreadManager;
+class io_service_thread_manager;
 
 typedef std::thread::id thread_id;
 
-class IOServiceThread final
+
+class io_service_thread final
 {
-	friend class IOServiceThreadManager;
+	friend class io_service_thread_manager;
 
 public:
-	IOServiceThread(IOServiceThreadManager &manager);
-	~IOServiceThread() = default;
+	io_service_thread(io_service_thread_manager &manager);
+	~io_service_thread() = default;
 
 public:
-	void RunThread();
+	void run_thread();
 
-	void Join();
+	void join();
 
-	void Stop();
+	void stop();
 
-	size_t Load() const;
+	size_t load() const;
 
 	template <typename CompletionHandler>
-	void Post(ASIO_MOVE_ARG(CompletionHandler) handler)
+	void post(ASIO_MOVE_ARG(CompletionHandler) handler)
 	{
 		io_service_.post(handler);
 	}
@@ -42,20 +43,20 @@ public:
 		return io_service_;
 	}
 
-	IOServiceThreadManager& manager()
+	io_service_thread_manager& manager()
 	{
 		return manager_;
 	}
 
 private:
-	void Run();
+	void run();
 
 protected:
-	IOServiceThread(const IOServiceThread&) = delete;
-	IOServiceThread& operator=(const IOServiceThread&) = delete;
+	io_service_thread(const io_service_thread&) = delete;
+	io_service_thread& operator=(const io_service_thread&) = delete;
 
 private:
-	IOServiceThreadManager&					manager_;
+	io_service_thread_manager&				manager_;
 	asio::io_service						io_service_;
 	std::shared_ptr<std::thread>			thread_;
 	std::unique_ptr<asio::io_service::work>	work_;

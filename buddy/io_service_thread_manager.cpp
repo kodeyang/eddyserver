@@ -1,4 +1,4 @@
-﻿#include "IOServiceThreadManager.h"
+﻿#include "io_service_thread_manager.h"
 
 #include <queue>
 #include <cassert>
@@ -6,40 +6,24 @@
 
 const size_t kMainThreadIndex = 0;
 
-IOServiceThreadManager::IOServiceThreadManager(const size_t thread_num)
+
+io_service_thread_manager::io_service_thread_manager(const size_t thread_num)
 {
 	assert(thread_num > kMainThreadIndex);
 
 	threads_.reserve(thread_num);
 	for (size_t i = 0; i < threads_.size(); ++i)
 	{
-		threads_[i] = std::make_shared<IOServiceThread>(*this);
+		threads_[i] = std::make_shared<io_service_thread>(*this);
 	}
 }
 
-IOServiceThreadManager::~IOServiceThreadManager()
+io_service_thread_manager::~io_service_thread_manager()
 {
-	Stop();
+	stop();
 }
 
-void IOServiceThreadManager::Run()
-{
-	if (threads_.empty())
-	{
-		return;
-	}
-
-	for (size_t i = 0; i < threads_.size(); ++i)
-	{
-		if (i != kMainThreadIndex)
-		{
-			threads_[i]->RunThread();
-		}
-	}
-	threads_[kMainThreadIndex]->Run();
-}
-
-void IOServiceThreadManager::Stop()
+void io_service_thread_manager::run()
 {
 	if (threads_.empty())
 	{
@@ -50,7 +34,24 @@ void IOServiceThreadManager::Stop()
 	{
 		if (i != kMainThreadIndex)
 		{
-			threads_[i]->Stop();
+			threads_[i]->run_thread();
+		}
+	}
+	threads_[kMainThreadIndex]->run();
+}
+
+void io_service_thread_manager::stop()
+{
+	if (threads_.empty())
+	{
+		return;
+	}
+
+	for (size_t i = 0; i < threads_.size(); ++i)
+	{
+		if (i != kMainThreadIndex)
+		{
+			threads_[i]->stop();
 		}
 	}
 
@@ -58,14 +59,14 @@ void IOServiceThreadManager::Stop()
 	{
 		if (i != kMainThreadIndex)
 		{
-			threads_[i]->Join();
+			threads_[i]->join();
 		}
 	}
 
-	threads_[kMainThreadIndex]->Stop();
+	threads_[kMainThreadIndex]->stop();
 }
 
-IOServiceThread& IOServiceThreadManager::GetThread()
+io_service_thread& io_service_thread_manager::thread()
 {
 	if (threads_.size() == 1)
 	{
@@ -76,12 +77,12 @@ IOServiceThread& IOServiceThreadManager::GetThread()
 	std::priority_queue<value_type, std::vector<value_type>, std::greater<value_type>> que;
 	for (size_t i = 0; i < threads_.size(); ++i)
 	{
-		que.push(std::make_pair(threads_[i]->Load(), i));
+		que.push(std::make_pair(threads_[i]->load(), i));
 	}
 	return *threads_[que.top().second];
 }
 
-IOServiceThread& IOServiceThreadManager::GetThread(thread_id id)
+io_service_thread& io_service_thread_manager::thread(thread_id id)
 {
 	for (size_t i = 0; i < threads_.size(); ++i)
 	{
@@ -93,7 +94,7 @@ IOServiceThread& IOServiceThreadManager::GetThread(thread_id id)
 	throw std::runtime_error("not found thread");
 }
 
-IOServiceThread& IOServiceThreadManager::GetMainThread()
+io_service_thread& io_service_thread_manager::main_thread()
 {
 	return *threads_[kMainThreadIndex];
 }

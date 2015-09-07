@@ -10,18 +10,27 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="buddy\IOServiceThreadManager.h">
+    <ClInclude Include="buddy\io_service_thread_manager.h">
       <Filter>buddy</Filter>
     </ClInclude>
-    <ClInclude Include="buddy\IOServiceThread.h">
+    <ClInclude Include="buddy\io_service_thread.h">
+      <Filter>buddy</Filter>
+    </ClInclude>
+    <ClInclude Include="buddy\socket_session.h">
+      <Filter>buddy</Filter>
+    </ClInclude>
+    <ClInclude Include="buddy\message_buffer.h">
       <Filter>buddy</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="buddy\IOServiceThreadManager.cpp">
+    <ClCompile Include="buddy\io_service_thread.cpp">
       <Filter>buddy</Filter>
     </ClCompile>
-    <ClCompile Include="buddy\IOServiceThread.cpp">
+    <ClCompile Include="buddy\io_service_thread_manager.cpp">
+      <Filter>buddy</Filter>
+    </ClCompile>
+    <ClCompile Include="buddy\message_buffer.cpp">
       <Filter>buddy</Filter>
     </ClCompile>
   </ItemGroup>

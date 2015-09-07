@@ -10,6 +10,17 @@
       <Platform>Win32</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="buddy\io_service_thread.h" />
+    <ClInclude Include="buddy\io_service_thread_manager.h" />
+    <ClInclude Include="buddy\message_buffer.h" />
+    <ClInclude Include="buddy\socket_session.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="buddy\io_service_thread.cpp" />
+    <ClCompile Include="buddy\io_service_thread_manager.cpp" />
+    <ClCompile Include="buddy\message_buffer.cpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{EFAD114A-9778-4EE2-B9BC-4F6DB6848B60}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
@@ -78,14 +89,6 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="buddy\IOServiceThread.cpp" />
-    <ClCompile Include="buddy\IOServiceThreadManager.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="buddy\IOServiceThread.h" />
-    <ClInclude Include="buddy\IOServiceThreadManager.h" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
