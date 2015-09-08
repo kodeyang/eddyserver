@@ -102,7 +102,11 @@ io_service_thread& io_service_thread_manager::main_thread()
 
 void io_service_thread_manager::on_session_connect(session_ptr session, session_handler_ptr handler)
 {
-
+	session_id id = kInvalidSessionID;
+	if (id_generator_.get(id))
+	{
+		handler->init(id, session->socket(), this);
+	}
 }
 
 void io_service_thread_manager::on_session_close(session_id id)
@@ -112,5 +116,10 @@ void io_service_thread_manager::on_session_close(session_id id)
 
 io_service_thread_manager::session_handler_ptr io_service_thread_manager::session_handler(session_id id) const
 {
-
+	session_handler_map::const_iterator itr = session_handler_map_.find(id);
+	if (itr != session_handler_map_.end())
+	{
+		return itr->second;
+	}
+	return session_handler_ptr();
 }

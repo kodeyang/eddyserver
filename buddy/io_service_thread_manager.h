@@ -4,6 +4,7 @@
 #include <memory>
 #include <unordered_map>
 #include "types.h"
+#include "id_generator.h"
 
 class tcp_session;
 class io_service_thread;
@@ -14,7 +15,7 @@ class io_service_thread_manager final
 	typedef std::shared_ptr<tcp_session> session_ptr;
 	typedef std::shared_ptr<io_service_thread> thread_ptr;
 	typedef std::shared_ptr<tcp_session_handle> session_handler_ptr;
-	typedef std::unordered_map<session_id, tcp_session_handle > session_handler_map;
+	typedef std::unordered_map<session_id, session_handler_ptr > session_handler_map;
 
 public:
 	explicit io_service_thread_manager(size_t thread_num = 1);
@@ -45,4 +46,5 @@ protected:
 private:
 	std::vector<thread_ptr> threads_;
 	session_handler_map		session_handler_map_;
+	id_generator			id_generator_;
 };
