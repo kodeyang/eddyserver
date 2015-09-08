@@ -1,13 +1,10 @@
 ﻿#pragma once
 
-#include <thread>
 #include <memory>
-#include <asio.hpp>
+#include <asio/io_service.hpp>
+#include "types.h"
 
 class io_service_thread_manager;
-
-typedef std::thread::id thread_id;
-
 
 class io_service_thread final
 {

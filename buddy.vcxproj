@@ -11,15 +11,22 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="buddy\config.h" />
     <ClInclude Include="buddy\io_service_thread.h" />
     <ClInclude Include="buddy\io_service_thread_manager.h" />
-    <ClInclude Include="buddy\message_buffer.h" />
-    <ClInclude Include="buddy\socket_session.h" />
+    <ClInclude Include="buddy\message_filter.h" />
+    <ClInclude Include="buddy\tcp_server.h" />
+    <ClInclude Include="buddy\tcp_session.h" />
+    <ClInclude Include="buddy\tcp_session_handle.h" />
+    <ClInclude Include="buddy\types.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="buddy\io_service_thread.cpp" />
     <ClCompile Include="buddy\io_service_thread_manager.cpp" />
-    <ClCompile Include="buddy\message_buffer.cpp" />
+    <ClCompile Include="buddy\message_filter.cpp" />
+    <ClCompile Include="buddy\tcp_server.cpp" />
+    <ClCompile Include="buddy\tcp_session.cpp" />
+    <ClCompile Include="buddy\tcp_session_handle.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{EFAD114A-9778-4EE2-B9BC-4F6DB6848B60}</ProjectGuid>

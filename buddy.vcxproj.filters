@@ -10,16 +10,28 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="buddy\io_service_thread_manager.h">
+    <ClInclude Include="buddy\config.h">
       <Filter>buddy</Filter>
     </ClInclude>
     <ClInclude Include="buddy\io_service_thread.h">
       <Filter>buddy</Filter>
     </ClInclude>
-    <ClInclude Include="buddy\socket_session.h">
+    <ClInclude Include="buddy\io_service_thread_manager.h">
       <Filter>buddy</Filter>
     </ClInclude>
-    <ClInclude Include="buddy\message_buffer.h">
+    <ClInclude Include="buddy\message_filter.h">
+      <Filter>buddy</Filter>
+    </ClInclude>
+    <ClInclude Include="buddy\tcp_session.h">
+      <Filter>buddy</Filter>
+    </ClInclude>
+    <ClInclude Include="buddy\tcp_session_handle.h">
+      <Filter>buddy</Filter>
+    </ClInclude>
+    <ClInclude Include="buddy\types.h">
+      <Filter>buddy</Filter>
+    </ClInclude>
+    <ClInclude Include="buddy\tcp_server.h">
       <Filter>buddy</Filter>
     </ClInclude>
   </ItemGroup>
@@ -30,7 +42,16 @@
     <ClCompile Include="buddy\io_service_thread_manager.cpp">
       <Filter>buddy</Filter>
     </ClCompile>
-    <ClCompile Include="buddy\message_buffer.cpp">
+    <ClCompile Include="buddy\message_filter.cpp">
+      <Filter>buddy</Filter>
+    </ClCompile>
+    <ClCompile Include="buddy\tcp_session.cpp">
+      <Filter>buddy</Filter>
+    </ClCompile>
+    <ClCompile Include="buddy\tcp_session_handle.cpp">
+      <Filter>buddy</Filter>
+    </ClCompile>
+    <ClCompile Include="buddy\tcp_server.cpp">
       <Filter>buddy</Filter>
     </ClCompile>
   </ItemGroup>

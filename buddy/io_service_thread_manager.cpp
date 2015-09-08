@@ -1,13 +1,13 @@
 ﻿#include "io_service_thread_manager.h"
 
 #include <queue>
-#include <cassert>
-#include <algorithm>
+#include "io_service_thread.h"
+#include "tcp_session_handle.h"
 
-const size_t kMainThreadIndex = 0;
+static const std::size_t kMainThreadIndex = 0;
 
 
-io_service_thread_manager::io_service_thread_manager(const size_t thread_num)
+io_service_thread_manager::io_service_thread_manager(size_t thread_num)
 {
 	assert(thread_num > kMainThreadIndex);
 
@@ -22,6 +22,7 @@ io_service_thread_manager::~io_service_thread_manager()
 {
 	stop();
 }
+
 
 void io_service_thread_manager::run()
 {
@@ -97,4 +98,19 @@ io_service_thread& io_service_thread_manager::thread(thread_id id)
 io_service_thread& io_service_thread_manager::main_thread()
 {
 	return *threads_[kMainThreadIndex];
+}
+
+void io_service_thread_manager::on_session_connect(session_ptr session, session_handler_ptr handler)
+{
+
+}
+
+void io_service_thread_manager::on_session_close(session_id id)
+{
+
+}
+
+io_service_thread_manager::session_handler_ptr io_service_thread_manager::session_handler(session_id id) const
+{
+
 }

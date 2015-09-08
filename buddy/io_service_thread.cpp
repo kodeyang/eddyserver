@@ -1,5 +1,4 @@
 ﻿#include "io_service_thread.h"
-
 #include <iostream>
 
 
