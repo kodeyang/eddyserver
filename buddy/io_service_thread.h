@@ -1,14 +1,17 @@
 ﻿#pragma once
 
 #include <memory>
+#include <unordered_set>
 #include <asio/io_service.hpp>
 #include "types.h"
 
+class tcp_session;
 class io_service_thread_manager;
 
 class io_service_thread final
 {
 	friend class io_service_thread_manager;
+	typedef std::shared_ptr<tcp_session> session_ptr;
 
 public:
 	io_service_thread(io_service_thread_manager &manager);
@@ -45,6 +48,11 @@ public:
 		return manager_;
 	}
 
+	std::unordered_set<session_ptr>& session_queue()
+	{
+		return session_queue_;
+	}
+
 private:
 	void run();
 
@@ -57,4 +65,5 @@ private:
 	asio::io_service						io_service_;
 	std::shared_ptr<std::thread>			thread_;
 	std::unique_ptr<asio::io_service::work>	work_;
+	std::unordered_set<session_ptr>			session_queue_;
 };

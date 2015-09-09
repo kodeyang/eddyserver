@@ -12,6 +12,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="buddy\config.h" />
+    <ClInclude Include="buddy\id_generator.h" />
     <ClInclude Include="buddy\io_service_thread.h" />
     <ClInclude Include="buddy\io_service_thread_manager.h" />
     <ClInclude Include="buddy\message_filter.h" />

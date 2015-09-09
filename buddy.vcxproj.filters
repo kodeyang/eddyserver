@@ -34,6 +34,9 @@
     <ClInclude Include="buddy\tcp_server.h">
       <Filter>buddy</Filter>
     </ClInclude>
+    <ClInclude Include="buddy\id_generator.h">
+      <Filter>buddy</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="buddy\io_service_thread.cpp">

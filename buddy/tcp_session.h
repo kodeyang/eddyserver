@@ -12,6 +12,8 @@ static const uint32_t kInvalidSessionID = 0;
 
 class tcp_session final : public std::enable_shared_from_this < tcp_session >
 {
+	friend class io_service_thread_manager;
+
 public:
 	typedef asio::ip::tcp::socket						socket_type;
 	typedef std::shared_ptr<message_filter_interface>	message_filter_ptr;
@@ -21,9 +23,19 @@ public:
 	~tcp_session();
 
 public:
+	session_id id() const
+	{
+		return id_;
+	}
+
 	socket_type& socket()
 	{
 		return socket_;
+	}
+
+	io_service_thread& thread() const
+	{
+		return thread_;
 	}
 
 private:

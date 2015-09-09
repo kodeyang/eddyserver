@@ -23,7 +23,6 @@ io_service_thread_manager::~io_service_thread_manager()
 	stop();
 }
 
-
 void io_service_thread_manager::run()
 {
 	if (threads_.empty())
@@ -105,7 +104,10 @@ void io_service_thread_manager::on_session_connect(session_ptr session, session_
 	session_id id = kInvalidSessionID;
 	if (id_generator_.get(id))
 	{
-		handler->init(id, session->socket(), this);
+		handler->init(id, session->thread().id(), this);
+		session_handler_map_.insert(std::make_pair(id, handler));
+		session->thread().post(std::bind(&tcp_session::init, session, id));
+		handler->on_connect();
 	}
 }
 
