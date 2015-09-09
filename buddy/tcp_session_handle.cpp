@@ -22,6 +22,11 @@ void tcp_session_handle::close()
 
 }
 
+void tcp_session_handle::dispose()
+{
+	session_id_ = kInvalidSessionID;
+}
+
 bool tcp_session_handle::is_closed() const
 {
 	return kInvalidSessionID == session_id_;

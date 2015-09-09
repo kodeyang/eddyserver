@@ -113,7 +113,19 @@ void io_service_thread_manager::on_session_connect(session_ptr session, session_
 
 void io_service_thread_manager::on_session_close(session_id id)
 {
-
+	assert(id != kInvalidSessionID);
+	session_handler_map::iterator itr = session_handler_map_.find(id);
+	if (itr != session_handler_map_.end())
+	{
+		session_handler_ptr handler = itr->second;
+		if (handler != nullptr)
+		{
+			handler->on_close();
+			handler->dispose();
+		}
+		session_handler_map_.erase(itr);
+	}
+	id_generator_.put(id);
 }
 
 io_service_thread_manager::session_handler_ptr io_service_thread_manager::session_handler(session_id id) const

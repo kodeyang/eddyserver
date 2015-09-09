@@ -24,6 +24,7 @@ void tcp_session::init(session_id id)
 
 	id_ = id;
 	socket_.set_option(asio::ip::tcp::no_delay(true));
+	thread_.session_queue().insert(shared_from_this());
 
 	size_t size = filter_->bytes_wanna_read();
 	if (size == kMessageAnySize)

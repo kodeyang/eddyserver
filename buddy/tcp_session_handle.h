@@ -17,6 +17,8 @@ public:
 
 	void close();
 
+	void dispose();
+
 	bool is_closed() const;
 
 public:
