@@ -2,7 +2,6 @@
 
 #include <iostream>
 #include "tcp_session.h"
-#include "message_filter.h"
 #include "io_service_thread.h"
 #include "tcp_session_handle.h"
 #include "io_service_thread_manager.h"
