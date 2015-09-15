@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="eddyserver">
+      <UniqueIdentifier>{c424d84f-7dde-41d8-b2d9-1563c5c6345c}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="eddyserver\config.h">
+      <Filter>eddyserver</Filter>
+    </ClInclude>
+    <ClInclude Include="eddyserver\id_generator.h">
+      <Filter>eddyserver</Filter>
+    </ClInclude>
+    <ClInclude Include="eddyserver\io_service_thread.h">
+      <Filter>eddyserver</Filter>
+    </ClInclude>
+    <ClInclude Include="eddyserver\io_service_thread_manager.h">
+      <Filter>eddyserver</Filter>
+    </ClInclude>
+    <ClInclude Include="eddyserver\message_filter.h">
+      <Filter>eddyserver</Filter>
+    </ClInclude>
+    <ClInclude Include="eddyserver\tcp_server.h">
+      <Filter>eddyserver</Filter>
+    </ClInclude>
+    <ClInclude Include="eddyserver\tcp_session.h">
+      <Filter>eddyserver</Filter>
+    </ClInclude>
+    <ClInclude Include="eddyserver\tcp_session_handle.h">
+      <Filter>eddyserver</Filter>
+    </ClInclude>
+    <ClInclude Include="eddyserver\types.h">
+      <Filter>eddyserver</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="eddyserver\io_service_thread.cpp">
+      <Filter>eddyserver</Filter>
+    </ClCompile>
+    <ClCompile Include="eddyserver\io_service_thread_manager.cpp">
+      <Filter>eddyserver</Filter>
+    </ClCompile>
+    <ClCompile Include="eddyserver\message_filter.cpp">
+      <Filter>eddyserver</Filter>
+    </ClCompile>
+    <ClCompile Include="eddyserver\tcp_server.cpp">
+      <Filter>eddyserver</Filter>
+    </ClCompile>
+    <ClCompile Include="eddyserver\tcp_session.cpp">
+      <Filter>eddyserver</Filter>
+    </ClCompile>
+    <ClCompile Include="eddyserver\tcp_session_handle.cpp">
+      <Filter>eddyserver</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
