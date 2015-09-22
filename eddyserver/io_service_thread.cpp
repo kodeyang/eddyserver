@@ -1,5 +1,7 @@
 ﻿#include "io_service_thread.h"
+
 #include <iostream>
+#include "tcp_session.h"
 
 
 io_service_thread::io_service_thread(io_service_thread_manager &manager)
@@ -35,7 +37,17 @@ void io_service_thread::run_thread()
 
 size_t io_service_thread::load() const
 {
-	return 0;
+	return session_queue_.size();
+}
+
+void io_service_thread::insert_ession(session_ptr session)
+{
+
+}
+
+void io_service_thread::erase_ession(session_ptr session)
+{
+
 }
 
 void io_service_thread::join()
