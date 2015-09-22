@@ -38,5 +38,5 @@ void tcp_server::handle_accept(session_ptr session, asio::error_code error)
 	io_thread_manager_.on_session_connect(session, handle);
 
 	session_ptr new_session = std::make_shared<tcp_session>(io_thread_manager_.thread(), message_filter_creator_());
-	acceptor_.async_accept(new_session->socket(), std::bind(&tcp_server::handle_accept, this, session, std::placeholders::_1));
+	acceptor_.async_accept(new_session->socket(), std::bind(&tcp_server::handle_accept, this, new_session, std::placeholders::_1));
 }

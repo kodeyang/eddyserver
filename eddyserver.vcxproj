@@ -77,7 +77,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="eddyserver\config.h" />
     <ClInclude Include="eddyserver\id_generator.h" />
     <ClInclude Include="eddyserver\io_service_thread.h" />
     <ClInclude Include="eddyserver\io_service_thread_manager.h" />

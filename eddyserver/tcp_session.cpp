@@ -1,5 +1,6 @@
 ﻿#include "tcp_session.h"
 
+#include <cassert>
 #include "message_filter.h"
 #include "io_service_thread.h"
 
@@ -27,12 +28,4 @@ void tcp_session::init(session_id id)
 	thread_.session_queue().insert(shared_from_this());
 
 	size_t size = filter_->bytes_wanna_read();
-	if (size == kMessageAnySize)
-	{
-
-	}
-	else
-	{
-
-	}
 }

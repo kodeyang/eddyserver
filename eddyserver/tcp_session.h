@@ -46,4 +46,5 @@ private:
 	socket_type				socket_;
 	io_service_thread&		thread_;
 	message_filter_ptr		filter_;
+	message_buffer			read_buffer_;
 };

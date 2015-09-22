@@ -6,9 +6,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="eddyserver\config.h">
-      <Filter>eddyserver</Filter>
-    </ClInclude>
     <ClInclude Include="eddyserver\id_generator.h">
       <Filter>eddyserver</Filter>
     </ClInclude>
