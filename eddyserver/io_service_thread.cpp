@@ -40,16 +40,6 @@ size_t io_service_thread::load() const
 	return session_queue_.size();
 }
 
-void io_service_thread::insert_ession(session_ptr session)
-{
-
-}
-
-void io_service_thread::erase_ession(session_ptr session)
-{
-
-}
-
 void io_service_thread::join()
 {
 	if (thread_ != nullptr)
